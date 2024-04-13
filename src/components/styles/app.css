@@ -1,0 +1,8 @@
+.image-container {
+  display: flex;
+  justify-content: space-around;
+}
+
+.image {
+  max-height: 100vh;
+}
