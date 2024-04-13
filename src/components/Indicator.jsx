@@ -1,4 +1,3 @@
-import './styles/indicator.css';
 import PropTypes from 'prop-types';
 import { useEffect } from 'react';
 
@@ -22,6 +21,7 @@ export default function Indicator({ x, y, deleteIndicator }) {
     position: 'absolute',
     left: `${x - width / 2}px`,
     top: `${y - width / 2}px`,
+    backgroundColor: 'green',
   };
 
   return <div style={style} className="indicator"></div>;
