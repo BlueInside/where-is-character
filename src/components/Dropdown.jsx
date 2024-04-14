@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-
+import './styles/dropdown.css';
 export default function Dropdown({ x, y }) {
   const style = {
     position: `absolute`,
@@ -8,7 +8,7 @@ export default function Dropdown({ x, y }) {
   };
 
   return (
-    <div style={style}>
+    <div style={style} className="dropdown">
       <p>Character 1</p>
       <p>Character 2</p>
       <p>Character 3</p>
