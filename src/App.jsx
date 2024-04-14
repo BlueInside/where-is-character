@@ -3,11 +3,13 @@ import './components/styles/app.css';
 import Indicator from './components/Indicator';
 import { v4 as uuidv4 } from 'uuid';
 import Dropdown from './components/Dropdown';
+import axios from 'axios';
 
 function App() {
   const [indicators, setIndicators] = useState([]);
   const [dropdownPosition, setDropdownPosition] = useState({ x: 0, y: 0 });
   const [isDropdownOpen, setIsDropdownOpen] = useState([]);
+  const [characters, setCharacters] = useState([]);
   const imgRef = useRef(null);
 
   // Close dropdown if clicked outside image
@@ -16,6 +18,25 @@ function App() {
       setIsDropdownOpen(false);
     }
   }
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    axios
+      .get(`http://localhost:3000/characters`, { signal: controller.signal })
+
+      .then((res) => {
+        if (res.status >= 400) throw new Error('Server response is not ok');
+        setCharacters(res.data.characters);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+
+    return () => {
+      controller.abort();
+    };
+  }, []);
 
   useEffect(() => {
     window.addEventListener('click', closeDropdown);
@@ -48,17 +69,17 @@ function App() {
   function handleOnImageClick(event) {
     if (event.target) {
       const rect = event.target.getBoundingClientRect();
-      // const x = event.clientX - rect.left;
-      // const y = event.clientY - rect.top;
+      const x = event.clientX - rect.left;
+      const y = event.clientY - rect.top;
 
-      console.log(event.clientX + 50 > rect.right, rect.right);
-      // Makes sure it doesn't fall off the screen
+      // Makes sure dropdown doesn't fall off the screen
       const dropdownY =
-        event.clientY + 140 > rect.bottom ? event.pageY - 150 : event.pageY;
+        event.clientY + 300 > rect.bottom ? event.pageY - 350 : event.pageY;
 
       const dropdownX =
-        event.clientX + 140 > rect.right ? event.pageX - 100 : event.pageX + 40;
+        event.clientX + 200 > rect.right ? event.pageX - 200 : event.pageX + 40;
       createIndicator(event.pageX, event.pageY);
+      console.log('X/Y', x, y);
       showDropdown(dropdownX, dropdownY);
     }
   }
@@ -73,7 +94,11 @@ function App() {
           src="https://i.imgur.com/qnHGiJ8.jpeg"
         />
         {isDropdownOpen && (
-          <Dropdown x={dropdownPosition.x} y={dropdownPosition.y} />
+          <Dropdown
+            x={dropdownPosition.x}
+            y={dropdownPosition.y}
+            characters={characters}
+          />
         )}
         {indicators.map((indicator) => (
           <Indicator
