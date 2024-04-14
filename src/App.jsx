@@ -10,6 +10,7 @@ function App() {
   const [isDropdownOpen, setIsDropdownOpen] = useState([]);
   const imgRef = useRef(null);
 
+  // Close dropdown if clicked outside image
   function closeDropdown(e) {
     if (e.target !== imgRef.current) {
       setIsDropdownOpen(false);
