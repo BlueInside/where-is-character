@@ -10,14 +10,8 @@ function App() {
   const [dropdownPosition, setDropdownPosition] = useState({ x: 0, y: 0 });
   const [isDropdownOpen, setIsDropdownOpen] = useState([]);
   const [characters, setCharacters] = useState([]);
+  const [selectedCoordinates, setSelectedCoordinates] = useState(null);
   const imgRef = useRef(null);
-
-  // Close dropdown if clicked outside image
-  function closeDropdown(e) {
-    if (e.target !== imgRef.current) {
-      setIsDropdownOpen(false);
-    }
-  }
 
   useEffect(() => {
     const controller = new AbortController();
@@ -27,7 +21,8 @@ function App() {
 
       .then((res) => {
         if (res.status >= 400) throw new Error('Server response is not ok');
-        setCharacters(res.data.characters);
+        const characters = res.data.characters;
+        setCharacters(characters);
       })
       .catch((error) => {
         console.error(error);
@@ -45,6 +40,13 @@ function App() {
       window.removeEventListener('click', closeDropdown);
     };
   });
+
+  // Close dropdown if clicked outside image
+  function closeDropdown(e) {
+    if (e.target !== imgRef.current) {
+      setIsDropdownOpen(false);
+    }
+  }
 
   function showDropdown(x, y) {
     setDropdownPosition({ x, y });
@@ -72,6 +74,9 @@ function App() {
       const x = event.clientX - rect.left;
       const y = event.clientY - rect.top;
 
+      // Store selected coords relative to image in state variable
+      setSelectedCoordinates({ x, y });
+
       // Makes sure dropdown doesn't fall off the screen
       const dropdownY =
         event.clientY + 300 > rect.bottom ? event.pageY - 350 : event.pageY;
@@ -97,6 +102,7 @@ function App() {
           <Dropdown
             x={dropdownPosition.x}
             y={dropdownPosition.y}
+            selectedCoordinates={selectedCoordinates}
             characters={characters}
           />
         )}
