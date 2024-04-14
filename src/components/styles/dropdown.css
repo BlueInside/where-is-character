@@ -6,14 +6,19 @@
   padding: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
-
-.dropdown p {
-  margin: 0;
-  padding: 4px 8px;
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  padding: 6px 8px;
   cursor: pointer;
-  border-radius: 5px;
 }
 
-.dropdown p:hover {
+.dropdown-item:hover {
   background-color: #be6b6b;
+}
+
+.dropdown-icon {
+  width: 40px;
+  height: 50px;
+  margin-right: 8px;
 }
