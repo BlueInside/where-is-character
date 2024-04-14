@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import './components/styles/app.css';
 import Indicator from './components/Indicator';
 import { v4 as uuidv4 } from 'uuid';
@@ -8,6 +8,21 @@ function App() {
   const [indicators, setIndicators] = useState([]);
   const [dropdownPosition, setDropdownPosition] = useState({ x: 0, y: 0 });
   const [isDropdownOpen, setIsDropdownOpen] = useState([]);
+  const imgRef = useRef(null);
+
+  function closeDropdown(e) {
+    if (e.target !== imgRef.current) {
+      setIsDropdownOpen(false);
+    }
+  }
+
+  useEffect(() => {
+    window.addEventListener('click', closeDropdown);
+
+    return () => {
+      window.removeEventListener('click', closeDropdown);
+    };
+  });
 
   function showDropdown(x, y) {
     setDropdownPosition({ x, y });
@@ -53,6 +68,7 @@ function App() {
         <img
           onClick={handleOnImageClick}
           className="image"
+          ref={imgRef}
           src="https://i.imgur.com/qnHGiJ8.jpeg"
         />
         {isDropdownOpen && (
