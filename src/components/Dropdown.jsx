@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import './styles/dropdown.css';
-export default function Dropdown({ x, y }) {
+export default function Dropdown({ x, y, characters }) {
   const style = {
     position: `absolute`,
     left: `${x}px`,
@@ -9,9 +9,13 @@ export default function Dropdown({ x, y }) {
 
   return (
     <div style={style} className="dropdown">
-      <p>Character 1</p>
-      <p>Character 2</p>
-      <p>Character 3</p>
+      {characters &&
+        characters.map((character) => (
+          <p className="dropdown-item" key={character._id}>
+            <img className="dropdown-icon" src={character.image} />
+            {character.name}
+          </p>
+        ))}
     </div>
   );
 }
@@ -19,4 +23,5 @@ export default function Dropdown({ x, y }) {
 Dropdown.propTypes = {
   x: PropTypes.number,
   y: PropTypes.number,
+  characters: PropTypes.arrayOf(PropTypes.object),
 };
