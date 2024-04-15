@@ -1,0 +1,7 @@
+.character-marker {
+  position: absolute;
+  width: 35px;
+  height: 35px;
+  background-image: url('../../../public/001-cross.png');
+  background-size: cover;
+}
