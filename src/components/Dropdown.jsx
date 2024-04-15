@@ -1,12 +1,14 @@
 import PropTypes from 'prop-types';
 import './styles/dropdown.css';
 import axios from 'axios';
+
 export default function Dropdown({
   x,
   y,
   characters,
   selectedCoordinates,
   markCharacter,
+  setServerMessage,
 }) {
   const style = {
     position: `absolute`,
@@ -33,10 +35,13 @@ export default function Dropdown({
       )
 
       .then((res) => {
+        res;
         const message = res.data.message.replace('_', ' ');
-        console.log(message);
         if (message.includes(`right`)) {
           markCharacter(selectedCharacter);
+          setServerMessage(message);
+        } else {
+          setServerMessage(message);
         }
       })
 
@@ -46,21 +51,23 @@ export default function Dropdown({
   }
 
   return (
-    <div style={style} className="dropdown">
-      {characters &&
-        characters.map((character) => (
-          <p
-            className="dropdown-item"
-            key={character._id}
-            onClick={() => {
-              handleCharacterSelection(character);
-            }}
-          >
-            <img className="dropdown-icon" src={character.image} />
-            {character.name.replace('_', ' ')}
-          </p>
-        ))}
-    </div>
+    <>
+      <div style={style} className="dropdown">
+        {characters &&
+          characters.map((character) => (
+            <p
+              className="dropdown-item"
+              key={character._id}
+              onClick={() => {
+                handleCharacterSelection(character);
+              }}
+            >
+              <img className="dropdown-icon" src={character.image} />
+              {character.name.replace('_', ' ')}
+            </p>
+          ))}
+      </div>
+    </>
   );
 }
 
@@ -69,6 +76,7 @@ Dropdown.propTypes = {
   y: PropTypes.number,
   characters: PropTypes.arrayOf(PropTypes.object),
   markCharacter: PropTypes.func,
+  setServerMessage: PropTypes.func,
   selectedCoordinates: PropTypes.shape({
     x: PropTypes.number,
     y: PropTypes.number,
