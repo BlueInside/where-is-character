@@ -4,6 +4,7 @@ import Indicator from './components/Indicator';
 import { v4 as uuidv4 } from 'uuid';
 import Dropdown from './components/Dropdown';
 import axios from 'axios';
+import CharacterMarker from './components/CharacterMarker';
 
 function App() {
   const [indicators, setIndicators] = useState([]);
@@ -11,6 +12,7 @@ function App() {
   const [isDropdownOpen, setIsDropdownOpen] = useState([]);
   const [characters, setCharacters] = useState([]);
   const [selectedCoordinates, setSelectedCoordinates] = useState(null);
+  const [guessedCharacters, setGuessedCharacters] = useState([]);
   const imgRef = useRef(null);
 
   useEffect(() => {
@@ -40,6 +42,17 @@ function App() {
       window.removeEventListener('click', closeDropdown);
     };
   });
+
+  function markCharacter(character) {
+    // Return if character already been marked
+    if (guessedCharacters.some((c) => c.name === character.name)) return;
+    const xCenter = (character.xCoordinate.min + character.xCoordinate.max) / 2;
+    const yCenter = (character.yCoordinate.min + character.yCoordinate.max) / 2;
+    setGuessedCharacters((prevValues) => [
+      ...prevValues,
+      { id: character._id, name: character.name, x: xCenter, y: yCenter },
+    ]);
+  }
 
   // Close dropdown if clicked outside image
   function closeDropdown(e) {
@@ -104,8 +117,14 @@ function App() {
             y={dropdownPosition.y}
             selectedCoordinates={selectedCoordinates}
             characters={characters}
+            markCharacter={(character) => {
+              markCharacter(character);
+            }}
           />
         )}
+        {guessedCharacters.map((character) => (
+          <CharacterMarker key={character.id} x={character.x} y={character.y} />
+        ))}
         {indicators.map((indicator) => (
           <Indicator
             key={indicator.id}
