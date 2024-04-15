@@ -31,6 +31,7 @@ export default function Dropdown({
           headers: {
             'Content-Type': 'application/json',
           },
+          withCredentials: true,
         }
       )
 
