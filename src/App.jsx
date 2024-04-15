@@ -6,6 +6,7 @@ import Dropdown from './components/Dropdown';
 import axios from 'axios';
 import CharacterMarker from './components/CharacterMarker';
 import FlashMessage from './components/FlashMessage';
+import Level from './components/Level';
 
 function App() {
   const [indicators, setIndicators] = useState([]);
@@ -133,41 +134,34 @@ function App() {
           setServerMessage(message);
         }}
       />
-      <div className="image-container">
-        <img
-          onClick={handleOnImageClick}
-          className="image"
-          ref={imgRef}
-          src="https://i.imgur.com/qnHGiJ8.jpeg"
+      <Level handleOnImageClick={handleOnImageClick} imgRef={imgRef} />
+      {isDropdownOpen && (
+        <Dropdown
+          x={dropdownPosition.x}
+          y={dropdownPosition.y}
+          selectedCoordinates={selectedCoordinates}
+          characters={characters}
+          markCharacter={(character) => {
+            markCharacter(character);
+          }}
+          setServerMessage={(message) => {
+            setServerMessage(message);
+          }}
         />
-        {isDropdownOpen && (
-          <Dropdown
-            x={dropdownPosition.x}
-            y={dropdownPosition.y}
-            selectedCoordinates={selectedCoordinates}
-            characters={characters}
-            markCharacter={(character) => {
-              markCharacter(character);
-            }}
-            setServerMessage={(message) => {
-              setServerMessage(message);
-            }}
-          />
-        )}
-        {guessedCharacters.map((character) => (
-          <CharacterMarker key={character.id} x={character.x} y={character.y} />
-        ))}
-        {indicators.map((indicator) => (
-          <Indicator
-            key={indicator.id}
-            x={indicator.x}
-            y={indicator.y}
-            deleteIndicator={() => {
-              deleteIndicator(indicator.id);
-            }}
-          />
-        ))}
-      </div>
+      )}
+      {guessedCharacters.map((character) => (
+        <CharacterMarker key={character.id} x={character.x} y={character.y} />
+      ))}
+      {indicators.map((indicator) => (
+        <Indicator
+          key={indicator.id}
+          x={indicator.x}
+          y={indicator.y}
+          deleteIndicator={() => {
+            deleteIndicator(indicator.id);
+          }}
+        />
+      ))}
     </>
   );
 }
