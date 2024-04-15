@@ -5,6 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 import Dropdown from './components/Dropdown';
 import axios from 'axios';
 import CharacterMarker from './components/CharacterMarker';
+import FlashMessage from './components/FlashMessage';
 
 function App() {
   const [indicators, setIndicators] = useState([]);
@@ -13,6 +14,8 @@ function App() {
   const [characters, setCharacters] = useState([]);
   const [selectedCoordinates, setSelectedCoordinates] = useState(null);
   const [guessedCharacters, setGuessedCharacters] = useState([]);
+  const [serverMessage, setServerMessage] = useState('');
+  const [markerCoordinates, setMarkerCoordinates] = useState(null);
   const imgRef = useRef(null);
 
   useEffect(() => {
@@ -46,11 +49,15 @@ function App() {
   function markCharacter(character) {
     // Return if character already been marked
     if (guessedCharacters.some((c) => c.name === character.name)) return;
-    const xCenter = (character.xCoordinate.min + character.xCoordinate.max) / 2;
-    const yCenter = (character.yCoordinate.min + character.yCoordinate.max) / 2;
+
     setGuessedCharacters((prevValues) => [
       ...prevValues,
-      { id: character._id, name: character.name, x: xCenter, y: yCenter },
+      {
+        id: character._id,
+        name: character.name,
+        x: markerCoordinates.x,
+        y: markerCoordinates.y,
+      },
     ]);
   }
 
@@ -84,11 +91,27 @@ function App() {
   function handleOnImageClick(event) {
     if (event.target) {
       const rect = event.target.getBoundingClientRect();
-      const x = event.clientX - rect.left;
-      const y = event.clientY - rect.top;
 
-      // Store selected coords relative to image in state variable
-      setSelectedCoordinates({ x, y });
+      // Calculate normalized coordinates relative to the image
+      let x = event.clientX;
+      let y = event.clientY;
+
+      // Adjust for scroll position
+      const scrollX = window.scrollX || window.pageXOffset;
+      const scrollY = window.scrollY || window.pageYOffset;
+      // Coordinates relative to the image
+      x = x + scrollX;
+      y = y + scrollY;
+      setMarkerCoordinates({ x, y });
+
+      // Normalized Coordinates
+      x = event.clientX - rect.left;
+      y = event.clientY - rect.top;
+      const imageX = (x / rect.width).toFixed(3) * 1000;
+      const imageY = (y / rect.height).toFixed(3) * 1000;
+      console.log(imageX, imageY);
+      // Store selected normalized coords
+      setSelectedCoordinates({ x: imageX, y: imageY });
 
       // Makes sure dropdown doesn't fall off the screen
       const dropdownY =
@@ -96,14 +119,20 @@ function App() {
 
       const dropdownX =
         event.clientX + 200 > rect.right ? event.pageX - 200 : event.pageX + 40;
-      createIndicator(event.pageX, event.pageY);
-      console.log('X/Y', x, y);
+      createIndicator(event.pageX, event.pageY); // Creates indicator where user clicked
+
       showDropdown(dropdownX, dropdownY);
     }
   }
 
   return (
     <>
+      <FlashMessage
+        message={serverMessage}
+        setServerMessage={(message) => {
+          setServerMessage(message);
+        }}
+      />
       <div className="image-container">
         <img
           onClick={handleOnImageClick}
@@ -119,6 +148,9 @@ function App() {
             characters={characters}
             markCharacter={(character) => {
               markCharacter(character);
+            }}
+            setServerMessage={(message) => {
+              setServerMessage(message);
             }}
           />
         )}
