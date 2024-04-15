@@ -17,7 +17,7 @@ export default function Level({ imgRef, handleOnImageClick }) {
         const imageUrl = URL.createObjectURL(response.data);
         setImageSrc(imageUrl);
       } catch (error) {
-        console.error('Error fetching image:', error);
+        throw new Error('Error fetching image: please try again later');
       }
     };
 
