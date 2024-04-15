@@ -12,6 +12,7 @@ export default function Level({ imgRef, handleOnImageClick }) {
         const response = await axios.get('http://localhost:3000/level1', {
           responseType: 'blob',
           signal: controller.signal,
+          withCredentials: true,
         });
 
         const imageUrl = URL.createObjectURL(response.data);
