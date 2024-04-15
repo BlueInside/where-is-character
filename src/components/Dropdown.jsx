@@ -1,7 +1,13 @@
 import PropTypes from 'prop-types';
 import './styles/dropdown.css';
 import axios from 'axios';
-export default function Dropdown({ x, y, characters, selectedCoordinates }) {
+export default function Dropdown({
+  x,
+  y,
+  characters,
+  selectedCoordinates,
+  markCharacter,
+}) {
   const style = {
     position: `absolute`,
     left: `${x}px`,
@@ -25,9 +31,13 @@ export default function Dropdown({ x, y, characters, selectedCoordinates }) {
           },
         }
       )
+
       .then((res) => {
         const message = res.data.message.replace('_', ' ');
         console.log(message);
+        if (message.includes(`right`)) {
+          markCharacter(selectedCharacter);
+        }
       })
 
       .catch((error) => {
@@ -58,6 +68,7 @@ Dropdown.propTypes = {
   x: PropTypes.number,
   y: PropTypes.number,
   characters: PropTypes.arrayOf(PropTypes.object),
+  markCharacter: PropTypes.func,
   selectedCoordinates: PropTypes.shape({
     x: PropTypes.number,
     y: PropTypes.number,
