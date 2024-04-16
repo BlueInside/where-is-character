@@ -7,12 +7,13 @@ import axios from 'axios';
 import CharacterMarker from './components/CharacterMarker';
 import FlashMessage from './components/FlashMessage';
 import Level from './components/Level';
+import ScoreBoard from './components/ScoreBoard';
 
 function App() {
   const [indicators, setIndicators] = useState([]);
   const [dropdownPosition, setDropdownPosition] = useState({ x: 0, y: 0 });
   const [isDropdownOpen, setIsDropdownOpen] = useState([]);
-  const [characters, setCharacters] = useState([]);
+  const [characters, setCharacters] = useState(null);
   const [selectedCoordinates, setSelectedCoordinates] = useState(null);
   const [guessedCharacters, setGuessedCharacters] = useState([]);
   const [serverMessage, setServerMessage] = useState('');
@@ -46,6 +47,7 @@ function App() {
       window.removeEventListener('click', closeDropdown);
     };
   });
+  const displayScoreboard = characters?.length === guessedCharacters?.length;
 
   function markCharacter(character) {
     // Return if character already been marked
@@ -128,6 +130,7 @@ function App() {
 
   return (
     <>
+      {displayScoreboard && <ScoreBoard />}
       <FlashMessage
         message={serverMessage}
         setServerMessage={(message) => {
