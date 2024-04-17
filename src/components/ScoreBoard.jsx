@@ -4,6 +4,7 @@ import axios from 'axios';
 
 export default function ScoreBoard() {
   const [scores, setScores] = useState([]);
+  const [playerScore, setPlayerScore] = useState(null);
   const [formInput, setFormInput] = useState('');
   const [hideForm, setHideForm] = useState(false);
   const [error, setError] = useState(false);
@@ -40,6 +41,7 @@ export default function ScoreBoard() {
       })
       .then((response) => {
         setScores(response.data.scores);
+        setPlayerScore(response.data.playerScore);
         console.log(response.data.scores);
       })
       .catch((error) => {
@@ -51,6 +53,9 @@ export default function ScoreBoard() {
   return (
     <div className="modal">
       <div className="modal-content">
+        <h2 className="modal-header">
+          Your score was {playerScore} Congratulations!
+        </h2>
         <h2 className="modal-header">Top 10 scores: </h2>
         <ul className="list">
           {scores.length > 0 ? (
@@ -65,7 +70,11 @@ export default function ScoreBoard() {
           )}
         </ul>
         {error && <p>Something went wrong during submitting the score</p>}
-        {hideForm && !error && <p>Thank you for your submit!</p>}
+        {hideForm && !error && (
+          <p style={{ textAlign: 'center' }}>
+            Thank you for playing! That&apos;s it, you can leave now...
+          </p>
+        )}
         <form
           hidden={hideForm}
           className="form-container"
