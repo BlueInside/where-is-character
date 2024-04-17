@@ -11,7 +11,7 @@ export default function ScoreBoard() {
   function handleFormSubmit() {
     axios
       .post(
-        'http://localhost:3000/scores',
+        'https://where-is-character-back-end-production.up.railway.app/scores',
         {
           name: formInput,
         },
@@ -35,10 +35,13 @@ export default function ScoreBoard() {
   useEffect(() => {
     const controller = new AbortController();
     axios
-      .get('http://localhost:3000/results', {
-        signal: controller.signal,
-        withCredentials: true,
-      })
+      .get(
+        'https://where-is-character-back-end-production.up.railway.app/results',
+        {
+          signal: controller.signal,
+          withCredentials: true,
+        }
+      )
       .then((response) => {
         setScores(response.data.scores);
         setPlayerScore(response.data.playerScore);

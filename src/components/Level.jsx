@@ -9,11 +9,14 @@ export default function Level({ imgRef, handleOnImageClick }) {
     const controller = new AbortController();
     const fetchImage = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/level1', {
-          responseType: 'blob',
-          signal: controller.signal,
-          withCredentials: true,
-        });
+        const response = await axios.get(
+          'https://where-is-character-back-end-production.up.railway.app/level1',
+          {
+            responseType: 'blob',
+            signal: controller.signal,
+            withCredentials: true,
+          }
+        );
 
         const imageUrl = URL.createObjectURL(response.data);
         setImageSrc(imageUrl);
