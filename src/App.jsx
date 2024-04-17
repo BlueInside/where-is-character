@@ -115,6 +115,7 @@ function App() {
       const imageX = (x / rect.width).toFixed(3) * 1000;
       const imageY = (y / rect.height).toFixed(3) * 1000;
       console.log(imageX, imageY);
+
       // Store selected normalized coords
       setSelectedCoordinates({ x: imageX, y: imageY });
 
