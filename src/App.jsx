@@ -8,6 +8,7 @@ import CharacterMarker from './components/CharacterMarker';
 import FlashMessage from './components/FlashMessage';
 import Level from './components/Level';
 import ScoreBoard from './components/ScoreBoard';
+import GameRules from './components/GameRules';
 
 function App() {
   const [indicators, setIndicators] = useState([]);
@@ -18,6 +19,7 @@ function App() {
   const [guessedCharacters, setGuessedCharacters] = useState([]);
   const [serverMessage, setServerMessage] = useState('');
   const [markerCoordinates, setMarkerCoordinates] = useState(null);
+  const [displayGameRules, setDisplayGameRules] = useState(true);
   const imgRef = useRef(null);
 
   useEffect(() => {
@@ -127,6 +129,15 @@ function App() {
       showDropdown(dropdownX, dropdownY);
     }
   }
+
+  if (displayGameRules)
+    return (
+      <GameRules
+        displayGameRules={displayGameRules}
+        setDisplayGameRules={setDisplayGameRules}
+        characters={characters}
+      />
+    );
 
   return (
     <>
