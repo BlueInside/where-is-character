@@ -54,7 +54,7 @@ export default function ScoreBoard() {
         );
       });
     return () => controller.abort();
-  }, []);
+  }, [gameId]);
 
   return (
     <div className="modal">
