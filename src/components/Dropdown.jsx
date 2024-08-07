@@ -21,7 +21,7 @@ export default function Dropdown({
 
     axios
       .post(
-        'https://where-is-character-back-end-production.up.railway.app/validate',
+        'http://localhost:3000/validate',
         {
           name: selectedCharacter.name,
           xCoordinate: x,
