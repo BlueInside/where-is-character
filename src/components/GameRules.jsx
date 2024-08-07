@@ -8,6 +8,14 @@ export default function GameRules({
 }) {
   if (!displayGameRules) return <></>;
 
+  const startTimer = async () => {
+    const response = await fetch(`http://localhost:3000/start`, {
+      credentials: 'include',
+    });
+    const data = await response.json();
+    localStorage.setItem('gameId', data.gameId);
+  };
+
   return (
     <div className="game-rules-modal">
       <div className="game-rules-modal-content">
@@ -33,7 +41,14 @@ export default function GameRules({
           your score will be calculated based on the time it took you to
           complete the game.
         </p>
-        <button onClick={() => setDisplayGameRules(false)}>Start Game</button>
+        <button
+          onClick={() => {
+            setDisplayGameRules(false);
+            startTimer();
+          }}
+        >
+          Start Game
+        </button>
       </div>
     </div>
   );
