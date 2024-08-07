@@ -25,6 +25,26 @@ Where Are Characters is a photo tagging application designed to allow users to m
 
 Application can be seen [here](https://where-is-character.netlify.app/)
 
+## Installation
+1. **Install Node.js and npm**
+   - Ensure you have Node.js and npm installed. If not, download and install them from [nodejs.org](https://nodejs.org/).
+   - You can check your Node.js and npm versions by running `node -v` and `npm -v` in your terminal.
+
+
+2. **Install all dependencies**
+   - Navigate to your project's root directory in your terminal.
+   - Run the following command to install all required dependencies:
+     ```bash
+     npm install
+     ```
+
+3. **Run the app in development mode**
+   - To start the server in development mode with hot reloading (if configured), use:
+     ```bash
+     npm run dev
+     ```
+   - This command should be defined in your `package.json` file under `scripts`.
+
 ## License
 
 - This project is licensed under the MIT License. Feel free to use, modify, and distribute the code for personal or commercial projects.
