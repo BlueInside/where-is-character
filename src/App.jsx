@@ -24,9 +24,10 @@ function App() {
 
   useEffect(() => {
     const controller = new AbortController();
+    localStorage.removeItem('gameId');
 
     axios
-      .get(`https://where-is-character-back-end-production.up.railway.app/characters`, { signal: controller.signal })
+      .get(`http://localhost:3000/characters`, { signal: controller.signal })
 
       .then((res) => {
         if (res.status >= 400) throw new Error('Server response is not ok');
