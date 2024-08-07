@@ -8,10 +8,12 @@ export default function ScoreBoard() {
   const [formInput, setFormInput] = useState('');
   const [hideForm, setHideForm] = useState(false);
   const [error, setError] = useState(false);
+  const gameId = localStorage.getItem('gameId');
+
   function handleFormSubmit() {
     axios
       .post(
-        'https://where-is-character-back-end-production.up.railway.app/scores',
+        `http://localhost:3000/scores?gameId=${gameId}`,
         {
           name: formInput,
         },
@@ -34,21 +36,22 @@ export default function ScoreBoard() {
 
   useEffect(() => {
     const controller = new AbortController();
+
     axios
-      .get(
-        'https://where-is-character-back-end-production.up.railway.app/results',
-        {
-          signal: controller.signal,
-          withCredentials: true,
-        }
-      )
+      .get(`http://localhost:3000/results?gameId=${gameId}`, {
+        signal: controller.signal,
+        withCredentials: true,
+      })
       .then((response) => {
         setScores(response.data.scores);
         setPlayerScore(response.data.playerScore);
         console.log(response.data.scores);
       })
       .catch((error) => {
-        console.error('Failed to fetch image please try again later', error);
+        console.error(
+          'Failed to fetch score results please try again later',
+          error
+        );
       });
     return () => controller.abort();
   }, []);
