@@ -9,9 +9,12 @@ export default function GameRules({
   if (!displayGameRules) return <></>;
 
   const startTimer = async () => {
-    const response = await fetch(`http://localhost:3000/start`, {
-      credentials: 'include',
-    });
+    const response = await fetch(
+      `https://where-is-character-back-end-production.up.railway.app/start`,
+      {
+        credentials: 'include',
+      }
+    );
     const data = await response.json();
     localStorage.setItem('gameId', data.gameId);
   };
